@@ -1,0 +1,44 @@
+name: Validação Cognitiva
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-ai-specs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install JSON Schema Validator
+      run: npm install -g ajv-cli
+      
+    - name: Validate JSON Schemas
+      run: |
+        find .ai/schemas -name "*.json" -exec ajv validate -s {} \;
+        
+    - name: Check for required .ai files
+      run: |
+        if [ ! -f ".ai/README.md" ]; then
+          echo "Erro: .ai/README.md não encontrado"
+          exit 1
+        fi
+        
+        if [ -z "$(find .ai/agents -name "*.agent.md" -print -quit)" ]; then
+          echo "Aviso: Nenhum agente encontrado em .ai/agents"
+        fi
+        
+        if [ -z "$(find .ai/flows -name "*.flow.md" -print -quit)" ]; then
+          echo "Aviso: Nenhum fluxo encontrado em .ai/flows"
+        fi
+        
+        if [ -z "$(find .ai/patterns -name "*.pattern.md" -print -quit)" ]; then
+          echo "Aviso: Nenhum pattern encontrado em .ai/patterns"
+        fi

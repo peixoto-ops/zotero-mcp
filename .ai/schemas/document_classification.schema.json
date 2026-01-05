@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Classificação de Documento Jurídico",
+  "description": "Esquema para validação de classificação de documentos jurídicos",
+  "required": ["tipo_documento", "tribunal", "data", "numero_processo", "ementa"],
+  "properties": {
+    "tipo_documento": {
+      "type": "string",
+      "enum": ["acordao", "decisao_monocratica", "lei", "portaria", "artigo_doutrina", "outro"],
+      "description": "Tipo do documento jurídico"
+    },
+    "tribunal": {
+      "type": "string",
+      "description": "Nome do tribunal ou órgão expedidor"
+    },
+    "classe_processo": {
+      "type": "string",
+      "description": "Classe do processo (ex: AI, RE, HC, etc.)"
+    },
+    "data": {
+      "type": "string",
+      "format": "date",
+      "description": "Data do documento no formato YYYY-MM-DD"
+    },
+    "numero_processo": {
+      "type": "string",
+      "pattern": "^\\d{7}-\\d{2}\\.\\d{4}\\.d{1}\\.\\d{2}\\.d{4}$",
+      "description": "Número do processo no formato NNNNNNN-DD.AAAA.J.TR.OOOO"
+    },
+    "relator": {
+      "type": "string",
+      "description": "Nome do relator ou autoridade"
+    },
+    "ementa": {
+      "type": "string",
+      "description": "Ementa ou resumo do conteúdo"
+    },
+    "palavras_chave": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Lista de palavras-chave para indexação"
+    },
+    "temas_juridicos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Temas jurídicos abordados no documento"
+    },
+    "precedentes_citados": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Lista de precedentes citados no documento"
+    }
+  }
+}

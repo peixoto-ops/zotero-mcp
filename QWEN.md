@@ -96,6 +96,89 @@ npx @modelcontextprotocol/inspector uv run zotero-mcp
 ## Contexto do Projeto para Qwen Code
 Este diretório é especificamente para configurar e usar o zotero-mcp com o Qwen Code. O objetivo é integrar a funcionalidade do Zotero com o Qwen Code para permitir fluxos de trabalho de pesquisa que aproveitem tanto o gerenciamento de referências quanto as capacidades de IA.
 
+## Estrutura .ai/ — Especificação Cognitiva do Projeto
+
+A pasta `.ai/` define a **camada de inteligência do projeto zotero-mcp**.
+
+Ela não contém código executável, mas sim **contratos formais de análise,
+extração, classificação e geração de conhecimento jurídico** para agentes que
+se integram com MCP, Zotero e seus fluxos documentais.
+
+O objetivo é garantir:
+- fluxos reproduzíveis (e.g., ingestão de DJe para Zotero)
+- agentes auditáveis (com entradas e saídas estruturadas)
+- integração clara com o repositório de código existente (MCP server)
+- validação automática por schemas
+- rastreabilidade de decisões analíticas
+
+### Estrutura desta pasta
+
+- \`agents/\` — especificações funcionais de agentes
+- \`flows/\` — pipelines completos de processamento
+- \`patterns/\` — unidades de raciocínio reutilizáveis (padrões do Fabric)
+- \`schemas/\` — esquemas JSON para validação estrita
+- \`prompts/\` — prompts de alto nível para agentes/orquestradores
+
+### Padrões para Patterns do Fabric
+
+Cada pattern é uma pasta contendo obrigatoriamente um arquivo `system.md` com a seguinte estrutura:
+
+\`\`\`
+# IDENTITY and PURPOSE
+[Descreva quem a IA é e qual o objetivo principal do pattern. Ex: Você é um especialista em Direito Civil Brasileiro focado em contratos.]
+
+# STEPS
+[Lista numerada e lógica do processo de pensamento que a IA deve seguir.]
+1. Receber o input.
+2. Analisar cláusulas abusivas com base no CDC.
+3. Extrair prazos.
+
+# OUTPUT INSTRUCTIONS
+[Definição estrita do formato de saída. Ex: Apenas Markdown, sem introduções, formato JSON, etc.]
+- Use Markdown.
+- Não inclua "Here is the analysis".
+- Crie uma tabela para os prazos.
+
+# INPUT
+INPUT:
+\`\`\`
+
+Princípios arquiteturais:
+
+- **Atomicidade**: Um pattern deve fazer uma coisa e fazê-la bem
+- **Statelessness**: Patterns devem ser stateless e focados em uma única tarefa
+- **CLI e Piping**: O Fabric lê do stdin e deve ser usado com sintaxe de piping
+  - Exemplo: \`cat input.txt | fabric -p nome_do_pattern\`
+  - Encadeamento: \`xclip -o | fabric -p extract_facts | fabric -p create_timeline > timeline.md\`
+
+⚠️ Importante:
+Sempre que mencionar patterns, **referenciar o repositório oficial do Fabric**:
+👉 https://github.com/danielmiessler/Fabric
+
+### Template para criação de patterns
+
+Ao criar um novo pattern, siga este template como estrutura base:
+
+**Exemplo: `~/.config/fabric/patterns/extract_dates_legal/system.md`**
+
+\`\`\`markdown
+# IDENTITY and PURPOSE
+You are an expert Legal Assistant specializing in procedural timelines in Brazilian Law. Your goal is to extract every date and deadline from the provided text.
+
+# STEPS
+1. Scan the text for any mention of dates, times, or durations (e.g., "15 dias").
+2. Contextualize the date (what happened or what is due).
+3. Convert relative dates to format DD/MM/YYYY if the base date is known, otherwise keep original.
+
+# OUTPUT INSTRUCTIONS
+- Output MUST be a Markdown Table.
+- Columns: [Data/Prazo] | [Evento/Contexto] | [Observação].
+- Do not output conversational filler.
+
+# INPUT
+INPUT:
+\`\`\`
+
 ## Integração com MCP e Subagentes do Qwen Code
 Será necessário adaptar a instalação às instruções contidas nas seguintes documentações:
 
@@ -417,6 +500,53 @@ As saídas dos subagentes poderiam também ser organizadas para aproveitarmos o 
 - Expansão para novos domínios jurídicos
 - Integração com ferramentas adicionais
 - Criação de módulos especializados para áreas específicas do direito
+
+## Estrutura de Diretórios e Comandos Úteis do Fabric
+
+### Estrutura de diretórios padrão
+
+- **Diretório Base:** \`~/.config/fabric\`
+- **Diretório de Patterns:** \`~/.config/fabric/patterns\`
+- **Estrutura de um Pattern:** Cada pattern é uma pasta contendo, obrigatoriamente, um arquivo \`system.md\`.
+- Exemplo: \`~/.config/fabric/patterns/analisar_contrato/system.md\`
+
+### Comandos CLI úteis (Cheat Sheet)
+
+- \`fabric --list\`: Lista todos os patterns disponíveis.
+- \`fabric --update\`: Atualiza patterns oficiais (se configurado).
+- \`echo "texto" | fabric -p pattern\`: Teste rápido.
+- \`cat arquivo.txt | fabric -p nome_do_pattern\`: Processar conteúdo de arquivo.
+- \`xclip -o | fabric -p pattern\`: Processar texto da área de transferência.
+- \`yt --transcript "url" | fabric -p summarize\`: Sumarizar vídeo do YouTube (requer ferramenta \`yt\`).
+- \`fabric -p pattern -m modelo_especifico\`: Usar modelo específico (ex: gpt-4o, claude, etc.).
+
+### Princípios de operação para o Qwen Coder
+
+Ao atuar no desenvolvimento ou manutenção do Fabric, o Qwen deve obedecer aos seguintes princípios:
+
+1. **Princípio da Atomicidade (Unix Philosophy)**
+   - **Regra:** Um pattern deve fazer uma coisa e fazê-la bem.
+   - **Erro:** Criar um pattern \`analisar_tudo\` que resume, traduz e critica.
+   - **Correção:** Criar \`summarize_legal\`, \`translate_pt_br\` e \`critique_logic\`, e encadeá-los via pipe.
+
+2. **Sintaxe de Execução (CLI)**
+   - O Qwen deve gerar scripts bash que utilizem a sintaxe de *piping*. O Fabric lê do \`stdin\`.
+   - **Padrão:**\`cat input.txt | fabric -p nome_do_pattern\`
+   - **Encadeamento (Chaining):**
+   \`\`\`bash
+   xclip -o | fabric -p extract_facts | fabric -p create_timeline > timeline.md
+   \`\`\`
+   - **Com Models Específicos:**\`... | fabric -p nome_do_pattern -m gpt-4o\` (ou local models).
+
+3. **Criação de Novos Patterns**
+   - Quando for solicitado "Crie um pattern para \[tarefa\]", o Qwen deve:
+     1. **Nomear a pasta:** Snake_case, descritivo (ex: \`gerar_peticao_inicial\`).
+     2. **Gerar o \`system.md\`:** Usando a anatomia descrita anteriormente.
+     3. **Validar Contexto:** Garantir que o pattern considere a legislação brasileira ou o contexto específico do usuário.
+
+4. **Manutenção e Debug**
+   - Se o output for verboso (chatty), o Qwen deve inserir na seção \`# OUTPUT INSTRUCTIONS\`: "Apenas o resultado cru. Sem preâmbulos. Sem pós-texto."
+   - Se o output for alucinado, o Qwen deve reforçar a seção \`# STEPS\` com instruções de *Grounding* (basear-se apenas no texto fornecido).
 
 ## Licença
 Licença MIT
