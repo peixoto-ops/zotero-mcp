@@ -41,4 +41,8 @@ Criar um sistema de engenharia jurídica com:
 - redução de risco de erro ou alucinação
 - integração fluida entre ferramentas de IA e conhecimento jurídico
 
+## Configuração
+
+Para detalhes de configuração dos caminhos e variáveis do sistema, consulte o arquivo `paths.yaml`.
+
 Para detalhes técnicos, consulte o arquivo `QWEN.md`.

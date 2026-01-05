@@ -1,0 +1,63 @@
+---
+# Configuração de Caminhos - Projeto zotero-mcp
+
+# Caminhos principais do projeto
+project:
+  root: "/media/peixoto/Portable/zotero-mcp"
+  ai_specs: "/media/peixoto/Portable/zotero-mcp/.ai"
+  github_config: "/media/peixoto/Portable/zotero-mcp/.github"
+
+# Configurações do Fabric
+fabric:
+  installed_patterns: "/home/peixoto/.config/fabric"
+  custom_patterns: "/media/peixoto/Portable/custom_patterns"
+  system_patterns: "/home/peixoto/.config/fabric/patterns"
+
+# Configurações do Obsidian
+obsidian:
+  vault_path: "/media/peixoto/Portable/inv_sa_02"
+  local_rest_api_enabled: true
+  mcp_server_config:
+    command: "npx"
+    args: ["-y", "obsidian-mcp", "/media/peixoto/Portable/inv_sa_02"]
+
+# Configurações do Zotero
+zotero:
+  mcp_server:
+    command: "uv"
+    args: ["run", "zotero-mcp"]
+  api:
+    local_enabled: true
+    web_api_key: ""
+    library_id: ""
+    library_type: "user"
+
+# Configurações do Qwen Code
+qwen:
+  settings_path: "~/.qwen/settings.json"
+  mcp_servers:
+    zotero:
+      command: "uv"
+      args: ["run", "zotero-mcp"]
+      env:
+        ZOTERO_LOCAL: "true"
+        ZOTERO_API_KEY: ""
+        ZOTERO_LIBRARY_ID: ""
+    obsidian:
+      command: "npx"
+      args: ["-y", "obsidian-mcp", "/media/peixoto/Portable/inv_sa_02"]
+
+# Documentação
+documentation:
+  main: "/media/peixoto/Portable/zotero-mcp/QWEN.md"
+  readme: "/media/peixoto/Portable/zotero-mcp/README.md"
+  install_guide: "/media/peixoto/Portable/zotero-mcp/INSTALL.md"
+  context: "/media/peixoto/Portable/zotero-mcp/CONTEXT.md"
+  summary: "/media/peixoto/Portable/zotero-mcp/SUMMARY.md"
+
+# Outros caminhos relevantes
+paths:
+  git_repo: "git@github.com:peixoto-ops/zotero-mcp.git"
+  fabric_repo: "https://github.com/danielmiessler/Fabric"
+  zotero_mcp_repo: "https://github.com/kujenga/zotero-mcp"
+...
