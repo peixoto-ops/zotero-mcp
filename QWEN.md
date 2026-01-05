@@ -96,5 +96,15 @@ npx @modelcontextprotocol/inspector uv run zotero-mcp
 ## Contexto do Projeto para Qwen Code
 Este diretório é especificamente para configurar e usar o zotero-mcp com o Qwen Code. O objetivo é integrar a funcionalidade do Zotero com o Qwen Code para permitir fluxos de trabalho de pesquisa que aproveitem tanto o gerenciamento de referências quanto as capacidades de IA.
 
+## Integração com MCP e Subagentes do Qwen Code
+Será necessário adaptar a instalação às instruções contidas nas seguintes documentações:
+
+- Documentação para MCP do Qwen Code: https://qwenlm.github.io/qwen-code-docs/en/users/features/mcp/
+- Documentação para subagentes: https://qwenlm.github.io/qwen-code-docs/en/users/features/sub-agents/
+
+A ideia é verificar se é possível atribuir as ações aos subagentes que estivessem organizadas em MCPs. Assim poderíamos ter um subagente orquestrador que tivesse conhecimentos das subrotinas do fluxo, identificasse o ponto específico e delegasse as funções para os subagentes pré-configurados, apenas os organizando diante do contexto específico.
+
+As saídas dos subagentes poderiam também ser organizadas para aproveitarmos o potencial de usar cada uma delas em outros processos paralelamente.
+
 ## Licença
 Licença MIT
