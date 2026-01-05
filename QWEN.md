@@ -441,7 +441,18 @@ As saídas dos subagentes poderiam também ser organizadas para aproveitarmos o 
 - Integração com ferramentas adicionais
 - Criação de módulos especializados para áreas específicas do direito
 
-## Estrutura de Diretórios e Comandos Úteis do Fabric
+## Referências e Documentação Adicional
+
+Para carregar o contexto completo do projeto em sessões futuras, consulte:
+
+- `README.md` - Visão geral do sistema
+- `INSTALL.md` - Instruções detalhadas de instalação e configuração
+- `CONTEXT.md` - Contexto completo para sessões futuras
+- `SUMMARY.md` - Sumário dos componentes principais
+- `paths.yaml` - Configuração de caminhos e variáveis do sistema
+- `.ai/` - Infraestrutura cognitiva (agentes, fluxos, patterns, schemas, prompts)
+
+## Referências e Documentação do Fabric
 
 Para detalhes sobre a estrutura de diretórios e comandos úteis do Fabric, consulte:
 
