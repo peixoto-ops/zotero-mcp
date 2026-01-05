@@ -39,6 +39,22 @@ sudo apt install -y python3-pip python3-venv nodejs npm
 pip3 install uv
 ```
 
+### 3. Configurar a Infraestrutura Cognitiva
+
+Após a instalação, familiarize-se com a estrutura de arquivos:
+
+- `.ai/` - Infraestrutura cognitiva do projeto
+  - `.ai/README.md` - Documentação geral da infraestrutura cognitiva
+  - `.ai/identity.md` - Identidade e escopo do projeto e do usuário
+  - `.ai/rules.md` - Regras gerais de comportamento do sistema cognitivo
+  - `.ai/GOVERNANCE.md` - Princípios e processos de governança cognitiva
+  - `.ai/agents/` - Especificações funcionais de agentes
+  - `.ai/flows/` - Pipelines documentais completos
+  - `.ai/patterns/` - Padrões cognitivos reutilizáveis (Fabric)
+  - `.ai/schemas/` - Esquemas JSON para validação formal de saídas
+  - `.ai/prompts/` - Prompts especializados (ex: orquestrador MCP)
+  - `.ai/AGENT_PROMPT.md` - Prompt-base comum a todos os agentes
+
 ### 3. Configurar o Ambiente Python
 
 ```bash

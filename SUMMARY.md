@@ -52,11 +52,13 @@ O projeto zotero-mcp implementa um sistema completo de orquestração jurídica 
 ### 2. Infraestrutura Cognitiva (.ai/)
 
 #### 2.1. Estrutura de Diretórios
+- `.ai/`: Infraestrutura cognitiva (README, identity, rules, GOVERNANCE, agentes, fluxos, patterns, schemas, prompts, AGENT_PROMPT)
 - `.ai/agents/`: Especificações funcionais de agentes
-- `.ai/flows/`: Pipelines completos de processamento
-- `.ai/patterns/`: Padrões do Fabric para raciocínio jurídico
-- `.ai/schemas/`: Esquemas JSON para validação
-- `.ai/prompts/`: Prompts de alto nível para agentes
+- `.ai/flows/`: Pipelines documentais completos
+- `.ai/patterns/`: Padrões cognitivos reutilizáveis (Fabric)
+- `.ai/schemas/`: Esquemas JSON para validação formal de saídas
+- `.ai/prompts/`: Prompts especializados (ex: orquestrador MCP)
+- `.ai/AGENT_PROMPT.md`: Prompt-base comum a todos os agentes
 
 #### 2.2. Padrões do Fabric
 - Cada pattern segue a estrutura: IDENTITY and PURPOSE, STEPS, OUTPUT INSTRUCTIONS, INPUT

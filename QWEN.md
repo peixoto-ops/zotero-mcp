@@ -96,28 +96,55 @@ npx @modelcontextprotocol/inspector uv run zotero-mcp
 ## Contexto do Projeto para Qwen Code
 Este diretório é especificamente para configurar e usar o zotero-mcp com o Qwen Code. O objetivo é integrar a funcionalidade do Zotero com o Qwen Code para permitir fluxos de trabalho de pesquisa que aproveitem tanto o gerenciamento de referências quanto as capacidades de IA.
 
-## Estrutura .ai/ — Especificação Cognitiva do Projeto
+## Estrutura .ai/ — Infraestrutura Cognitiva do Projeto
 
-A pasta `.ai/` define a **camada de inteligência do projeto zotero-mcp**.
+A pasta `.ai/` define a **infraestrutura cognitiva do projeto zotero-mcp**.
 
-Ela não contém código executável, mas sim **contratos formais de análise,
-extração, classificação e geração de conhecimento jurídico** para agentes que
-se integram com MCP, Zotero e seus fluxos documentais.
+Ela descreve **como os agentes pensam, classificam, extraem e estruturam
+informação jurídica**, servindo como contrato formal entre:
 
-O objetivo é garantir:
-- fluxos reproduzíveis (e.g., ingestão de DJe para Zotero)
-- agentes auditáveis (com entradas e saídas estruturadas)
-- integração clara com o repositório de código existente (MCP server)
-- validação automática por schemas
-- rastreabilidade de decisões analíticas
+- código MCP
+- agentes de IA
+- fluxos documentais
+- integrações com Zotero e Obsidian
 
-Para detalhes sobre a estrutura e padrões, consulte os arquivos na pasta `.ai/`:
-- `.ai/README.md` - Descrição geral da estrutura
+Nenhum conteúdo aqui é código executável.
+Tudo aqui é **especificação, governança e reprodutibilidade**.
+
+### Estrutura e Componentes
+
+- `.ai/README.md` - Documentação geral da infraestrutura cognitiva
+- `.ai/identity.md` - Identidade e escopo do projeto e do usuário
+- `.ai/rules.md` - Regras gerais de comportamento do sistema cognitivo
+- `.ai/GOVERNANCE.md` - Princípios e processos de governança cognitiva
 - `.ai/agents/` - Especificações funcionais de agentes
-- `.ai/flows/` - Pipelines completos de processamento
-- `.ai/patterns/` - Padrões do Fabric para raciocínio jurídico
-- `.ai/schemas/` - Esquemas JSON para validação
-- `.ai/prompts/` - Prompts de alto nível para agentes
+- `.ai/flows/` - Pipelines documentais completos
+- `.ai/patterns/` - Padrões cognitivos reutilizáveis (Fabric)
+- `.ai/schemas/` - Esquemas JSON para validação formal de saídas
+- `.ai/prompts/` - Prompts especializados (ex: orquestrador MCP)
+- `.ai/AGENT_PROMPT.md` - Prompt-base comum a todos os agentes
+
+### Princípios Fundamentais
+
+A infraestrutura cognitiva segue estes princípios:
+
+1. **Separação Estrita de Responsabilidades**: A pasta `.ai/` contém exclusivamente lógica cognitiva e especificações; o código do MCP contém exclusivamente lógica de execução.
+
+2. **Transparência e Auditabilidade Total**: Toda decisão cognitiva relevante deve estar documentada em `.ai/`.
+
+3. **Reprodutibilidade e Determinismo Cognitivo**: Fluxos descritos em `.ai/flows/` devem ser completos, ordenados e reproduzíveis.
+
+4. **Saídas Estruturadas e Validáveis**: Nenhum agente pode produzir saída livre sem formato definido; toda saída relevante deve obedecer a um schema JSON ou seguir um formato formal documentado.
+
+5. **Patterns como Unidades Mínimas de Raciocínio**: Patterns representam unidades cognitivas reutilizáveis, com intenção clara, definindo entrada e saída.
+
+### Governança Cognitiva
+
+A governança cognitiva existe para garantir que:
+- o raciocínio do sistema seja explícito,
+- os agentes sejam auditáveis,
+- os fluxos sejam reproduzíveis,
+- e nenhuma lógica cognitiva fique implícita no código executável.
 
 ## Integração com MCP e Subagentes do Qwen Code
 Será necessário adaptar a instalação às instruções contidas nas seguintes documentações:

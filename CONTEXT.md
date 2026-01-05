@@ -16,9 +16,12 @@ O projeto zotero-mcp implementa um sistema completo de orquestração jurídica 
 - **Agente Zotero**: Sincronização com biblioteca Zotero
 
 ### 2. Infraestrutura Cognitiva (.ai/)
-- **Estrutura**: agents/, flows/, patterns/, schemas/, prompts/
+- **Estrutura**: README, identity, rules, GOVERNANCE, agents/, flows/, patterns/, schemas/, prompts/, AGENT_PROMPT
 - **Padrões**: Cada pattern segue estrutura IDENTITY, STEPS, OUTPUT INSTRUCTIONS
 - **Schemas**: Validação estruturada de saídas dos agentes
+- **Governança**: Princípios de separação de responsabilidades e auditabilidade
+- **Identidade**: Definição do escopo do projeto e do usuário
+- **Regras**: Diretrizes gerais de comportamento do sistema cognitivo
 
 ### 3. Integração com MCPs
 - **Zotero MCP**: Conexão com biblioteca Zotero
