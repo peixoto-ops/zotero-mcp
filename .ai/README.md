@@ -1,35 +1,37 @@
-# .ai — Especificação Cognitiva do zotero-mcp
+# .ai — Infraestrutura Cognitiva do zotero-mcp
 
-Esta pasta define a **camada de inteligência do projeto zotero-mcp**.
+Esta pasta define a **infraestrutura cognitiva** do projeto `zotero-mcp`.
 
-Ela não contém código executável, mas sim **contratos formais de análise,
-extração, classificação e geração de conhecimento jurídico** para agentes que
-se integram com MCP, Zotero e seus fluxos documentais.
+Ela descreve **como os agentes pensam, classificam, extraem e estruturam
+informação jurídica**, servindo como contrato formal entre:
 
-O objetivo é garantir:
-- fluxos reproduzíveis (e.g., ingestão de DJe para Zotero)
-- agentes auditáveis (com entradas e saídas estruturadas)
-- integração clara com o repositório de código existente (MCP server)
-- validação automática por schemas
-- rastreabilidade de decisões analíticas
+- código MCP
+- agentes de IA
+- fluxos documentais
+- integrações com Zotero e Obsidian
+
+Nenhum conteúdo aqui é código executável.
+Tudo aqui é **especificação, governança e reprodutibilidade**.
 
 ---
 
-## Estrutura desta pasta
+## Estrutura
 
+- `AGENT_PROMPT.md` — prompt-base comum a todos os agentes
 - `agents/` — especificações funcionais de agentes
-- `flows/` — pipelines completos de processamento
-- `patterns/` — unidades de raciocínio reutilizáveis (padrões)
-- `schemas/` — esquemas JSON para validação estrita
-- `prompts/` — prompts de alto nível para agentes/orquestradores
+- `flows/` — pipelines documentais
+- `patterns/` — padrões cognitivos reutilizáveis (Fabric)
+- `schemas/` — validação formal de saídas
+- `prompts/` — prompts especializados (ex: orquestrador MCP)
+- `rules.md` — regras duras de comportamento
+- `identity.md` — identidade e escopo do projeto
+- `GOVERNANCE.md` — regras de evolução
 
 ---
 
-## Depêndencias conceituais
+## Referência obrigatória
 
-Este projeto funciona em conjunto com a implementação MCP do Zotero,
-como as variantes disponíveis em Python e JavaScript.
-
-Para referência de padrões cognitivos, usamos o repositório oficial:
+Patterns documentados seguem o repositório oficial:
 
 https://github.com/danielmiessler/Fabric
+
