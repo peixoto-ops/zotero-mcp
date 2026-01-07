@@ -1,6 +1,8 @@
 ---
 share_link: https://share.note.sx/grwwhnh0
 share_updated: 2026-01-05T13:45:21-03:00
+reference_document: true
+warning: Este arquivo é de referência inicial e não deve ser seguido sem consultar anteriormente a documentação existente. Em caso de divergência, apenas aquilo que for designado explicitamente como complemento a implementar poderá gerar atualizações. Todas as atualizações precisam ser confirmadas identificando o estado atual do projeto e o estado da documentação de referência.
 ---
 
 

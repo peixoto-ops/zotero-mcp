@@ -8,6 +8,8 @@ created: 2026-01-05
 description: O precedente foi citado em algum ponto e precisa da última validação. Ou seja, preciso conseguir o texto, copiar uma parte, gerar o bibtext e o enviar para o zotero, depois tem uma sequencia de ações.  No final temos um diagrama.
 tags:
   - clippings
+reference_document: true
+warning: Este arquivo é de referência inicial e não deve ser seguido sem consultar anteriormente a documentação existente. Em caso de divergência, apenas aquilo que for designado explicitamente como complemento a implementar poderá gerar atualizações. Todas as atualizações precisam ser confirmadas identificando o estado atual do projeto e o estado da documentação de referência.
 ---
 ## Conversa com o Gemini
 

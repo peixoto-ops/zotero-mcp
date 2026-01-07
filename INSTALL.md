@@ -96,22 +96,167 @@ cp -r /media/peixoto/Portable/custom_patterns/* ~/.config/fabric/patterns/
 2. Crie uma nova chave de API
 3. Anote seu ID de usuário e a chave da API
 
-### 6. Configurar o Obsidian MCP
+### 6. Configurar o Obsidian MCP (bitbonsai/mcp-obsidian)
 
+#### 6.1 Pré-requisitos
+- **Sistema Operacional**: Linux / macOS / Windows (WSL ok)
+- **Node.js**: >= 18.x
+- **npm**: >= 9.x
+- **Obsidian**: instalado localmente com acesso ao filesystem do vault
+
+Verificação:
 ```bash
-# Instalar o Obsidian MCP Server
-npx @smithery/cli install obsidian-mcp --client qwen
-
-# Ou instalar manualmente
-npm install -g obsidian-mcp
+node --version
+npm --version
 ```
 
-#### Configuração do Plugin do Obsidian
-1. No Obsidian, vá para Configurações > Plugins da Comunidade
-2. Clique em "Procurar" e pesquise por "Local REST API" de `coddingtonbear`
-3. Clique em "Instalar" e ative o plugin
+#### 6.2 Clonar o repositório
+```bash
+git clone https://github.com/bitbonsai/mcp-obsidian.git
+cd mcp-obsidian
+```
 
-### 7. Configurar os MCPs no Qwen Code
+#### 6.3 Instalar dependências
+```bash
+npm install
+```
+
+#### 6.4 Build do servidor MCP
+```bash
+npm run build
+```
+
+Artefato esperado: `dist/index.js`
+
+Se `dist/index.js` não existir → build falhou.
+
+#### 6.5 Estrutura esperada após build
+```
+mcp-obsidian/
+├── dist/
+│   └── index.js        # ENTRYPOINT MCP
+├── src/
+├── package.json
+├── README.md
+└── node_modules/
+```
+
+#### 6.6 Definir o caminho do Vault do Obsidian
+Defina o caminho absoluto do vault.
+
+Exemplo Linux:
+````
+/home/luiz/ObsidianVault
+```
+
+⚠️ O MCP opera diretamente no filesystem, não via API do Obsidian.
+
+#### 6.7 Configuração no cliente MCP (Claude / ChatGPT Desktop / outro)
+
+Arquivo de configuração MCP (exemplo genérico):
+```json
+{
+  "mcpServers": {
+    "obsidian": {
+      "command": "node",
+      "args": [
+        "/ABSOLUTE/PATH/mcp-obsidian/dist/index.js",
+        "/ABSOLUTE/PATH/DO/VAULT"
+      ]
+    }
+  }
+}
+```
+
+Exemplo concreto (Linux):
+```json
+{
+  "mcpServers": {
+    "obsidian": {
+      "command": "node",
+      "args": [
+        "/home/luiz/tools/mcp-obsidian/dist/index.js",
+        "/home/luiz/ObsidianVault"
+      ]
+    }
+  }
+}
+```
+
+#### 6.8 Ferramentas MCP disponíveis (core)
+O servidor expõe ferramentas MCP do tipo:
+- `read_note`
+- `write_note`
+- `append_note`
+- `prepend_note`
+- `delete_note`
+- `move_note`
+- `list_directory`
+- `search_notes`
+- `get_frontmatter`
+- `update_frontmatter`
+
+Todas operam sobre arquivos .md dentro do vault.
+
+#### 6.9 Modos de escrita suportados
+- overwrite
+- append
+- prepend
+
+Exemplo lógico (não JSON MCP, apenas semântico):
+````
+write_note(path="Notas/Teste.md", mode="append", content="texto")
+```
+
+#### 6.10 Regras de segurança implementadas
+- Restrição ao diretório do vault
+- Sanitização de path traversal
+- Parsing seguro de frontmatter YAML
+- Respostas curtas (LLM-optimized)
+
+#### 6.11 Problemas comuns
+- **Erro: node não encontrado**: `sudo apt install nodejs npm`
+- **Erro: caminho do vault inválido**: Use caminho absoluto e verifique permissões de leitura/escrita
+- **Erro: dist/index.js não existe**: Execute `npm run build`
+
+#### 6.12 Estado do projeto
+- Status: ativo
+- Compatibilidade: MCP padrão
+- Dependência do Obsidian: nenhuma em runtime
+- Plugin Obsidian: NÃO obrigatório
+
+#### 6.13 Recomendação para automação (seu caso)
+Para integração com Fabric, Zotero e Obsidian como base de conhecimento jurídico, use este MCP como camada de persistência final, controlada por um agente orquestrador, nunca diretamente pelo LLM principal.
+
+### 7. Configurar os Patterns do Fabric
+
+O Fabric já está instalado no sistema. Os patterns estão organizados da seguinte forma:
+
+- **Patterns customizados**: `/media/peixoto/Portable/custom_patterns`
+- **Instalação do Fabric**: `/home/peixoto/.config/fabric`
+
+Para usar os patterns customizados, você pode:
+
+1. **Link simbólico** (recomendado):
+```bash
+ln -s /media/peixoto/Portable/custom_patterns/* ~/.config/fabric/patterns/
+```
+
+2. **Cópia direta**:
+```bash
+cp -r /media/peixoto/Portable/custom_patterns/* ~/.config/fabric/patterns/
+```
+
+Os patterns do Fabric seguem a estrutura:
+- Cada pattern é uma pasta com nome descritivo
+- Dentro de cada pasta, existe um arquivo `system.md` com a definição do pattern
+- A estrutura do arquivo `system.md` segue o formato:
+  - `# IDENTITY and PURPOSE` - Identidade e propósito do pattern
+  - `# STEPS` - Etapas do processo de pensamento
+  - `# OUTPUT INSTRUCTIONS` - Instruções de saída
+  - `# INPUT` - Indicação do input
+
+### 8. Configurar os MCPs no Qwen Code
 
 Crie ou atualize o arquivo `~/.qwen/settings.json` com:
 

@@ -8,6 +8,8 @@ created: 2026-01-05
 description: "Conheça o Gemini, o assistente de IA do Google. Receba ajuda para escrever, planejar, ter ideias e muito mais. Conheça o poder da IA generativa."
 tags:
   - "clippings"
+reference_document: true
+warning: Este arquivo é de referência inicial e não deve ser seguido sem consultar anteriormente a documentação existente. Em caso de divergência, apenas aquilo que for designado explicitamente como complemento a implementar poderá gerar atualizações. Todas as atualizações precisam ser confirmadas identificando o estado atual do projeto e o estado da documentação de referência.
 ---
 explique em que situações e como posso usar os mcps que tenho configurados aqui. Leve em consideração minhas rotinas de trabalho que já conhece.
 
