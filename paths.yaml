@@ -54,6 +54,7 @@ documentation:
   install_guide: "/media/peixoto/Portable/zotero-mcp/INSTALL.md"
   context: "/media/peixoto/Portable/zotero-mcp/CONTEXT.md"
   summary: "/media/peixoto/Portable/zotero-mcp/SUMMARY.md"
+  paths_config: "/media/peixoto/Portable/zotero-mcp/paths.yaml"
 
 # Outros caminhos relevantes
 paths:
