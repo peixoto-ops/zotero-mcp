@@ -28,7 +28,7 @@ O sistema é um **orquestrador de produção jurídica** que:
 
 ## Estrutura do Projeto
 
-- `.ai/` - Infraestrutura cognitiva (README, identity, rules, GOVERNANCE, agentes, fluxos, patterns, schemas, prompts, AGENT_PROMPT)
+- `.ai/` - Infraestrutura cognitiva (README, identity, rules, GOVERNANCE, agentes, fluxos, patterns, schemas, prompts, AGENT_PROMPT, catalog, orchestrators, teams, consolidation, integration)
 - `.github/` - Configurações de CI/CD e templates de contribuição
 - `QWEN.md` - Documentação técnica detalhada do sistema
 - `README.md` - Visão geral do sistema
