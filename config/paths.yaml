@@ -1,0 +1,13 @@
+# Lex-OS Kernel Configuration
+
+# Caminho absoluto para o seu Vault do Obsidian
+# IMPORTANTE: O agente deve ajustar isso para o caminho real do usuário
+obsidian_vault_path: "/media/peixoto/Portable/inv_sa_02"
+
+# Caminho absoluto para os patterns customizados do Fabric
+custom_patterns_path: "/media/peixoto/Portable/costum_patterns"
+
+# Configurações do Zotero (Opcional se usar ENV VARS)
+zotero:
+  api_key_env: "ZOTERO_API_KEY"
+  library_id_env: "ZOTERO_LIBRARY_ID"

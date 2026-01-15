@@ -1,21 +1,27 @@
-# Contexto do Projeto - zotero-mcp
+# Contexto do Projeto - Lex-OS Kernel
 
 ## Visão Geral do Projeto
 
-O projeto zotero-mcp implementa um sistema completo de orquestração jurídica assistida por múltiplos agentes, integrado ao Zotero, Obsidian e Fabric, com foco em análise profunda de precedentes jurídicos, construção controlada de teses jurídicas, redação modular e verificável de peças processuais e preservação de cadeia de custódia e rastreabilidade probatória.
+O projeto Lex-OS Kernel implementa um Sistema Operacional Jurídico baseado no Model Context Protocol (MCP), atuando como middleware inteligente entre o Zotero, Obsidian e a engine de IA local (Fabric). O sistema permite a automação completa de workflows jurídicos com alta eficiência e rastreabilidade, com foco em análise profunda de precedentes jurídicos, construção controlada de teses jurídicas, redação modular e verificável de peças processuais e preservação de cadeia de custódia e rastreabilidade probatória.
 
 ## Componentes Principais
 
-### 1. Agentes Especializados
-- **Agente de Precedentes**: FIRAC+, NER Jurídico, classificação de precedentes, geração de BibTeX
-- **Agente de Contexto**: Consulta à base de conhecimento no Obsidian
-- **Agente de Estratégia**: Análise de precedentes e definição de estratégia jurídica
-- **Agente de TOC**: Geração de esqueleto argumentativo
-- **Agente de Redação Jurídica**: Desenvolvimento em três dimensões (direito, jurisprudência, provas)
-- **Agente de Prova e Cadeia de Custódia**: Extração de fatos e preservação de provas
-- **Agente Zotero**: Sincronização com biblioteca Zotero
+### 1. Servidor MCP Lex-OS (`src/lex_os_server.py`)
+- **Módulo de Memória (Obsidian First)**: `check_local_memory` - Verifica a memória local antes de buscar externamente
+- **Módulo de Execução (Fabric Wrapper Async)**: `run_fabric_pipeline` - Executa pipelines do Fabric para processamento jurídico
+- **Módulo de Orquestração Zotero**: `process_zotero_collection` - Processa coleções específicas do Zotero
 
-### 2. Infraestrutura Cognitiva (.ai/)
+### 2. Sistema de Validação (`src/validation_system.py`)
+- Validação da integridade do link entre itens do Zotero e notas do Obsidian
+- Verificação da aplicação correta dos padrões Fabric nas notas
+- Sistema de auditoria para garantir consistência entre os sistemas
+
+### 3. Sistema de Equipes Paralelas (`src/parallel_teams_system.py`)
+- Criação de equipes especializadas para diferentes funções jurídicas
+- Processamento paralelo de múltiplos casos
+- Atribuição de tarefas com diferentes prioridades
+
+### 4. Infraestrutura Cognitiva (`docs/governance/`)
 - **Estrutura**: README, identity, rules, GOVERNANCE, agents/, flows/, patterns/, schemas/, prompts/, AGENT_PROMPT
 - **Padrões**: Cada pattern segue estrutura IDENTITY, STEPS, OUTPUT INSTRUCTIONS
 - **Schemas**: Validação estruturada de saídas dos agentes
@@ -23,29 +29,34 @@ O projeto zotero-mcp implementa um sistema completo de orquestração jurídica 
 - **Identidade**: Definição do escopo do projeto e do usuário
 - **Regras**: Diretrizes gerais de comportamento do sistema cognitivo
 
-### 3. Integração com MCPs
-- **Zotero MCP**: Conexão com biblioteca Zotero (instalado e funcionando)
-- **Obsidian MCP**: Conexão com vault do Obsidian
-  - `obsidian-vault`: Acesso ao vault com informações dos processos e pesquisas
-  - `obsidian-costum-patterns`: Acesso ao diretório de patterns do Fabric para análise jurídica
-- **Outras ferramentas**: serper, tavily-search, brave-search
-
-### 4. Orquestração com Subagentes
-- **Subagente Orquestrador**: Coordenação do fluxo jurídico
-- **Arquitetura**: Subagentes com responsabilidades bem definidas
-- **Processamento Paralelo**: Organização de saídas para uso em outros processos
-
 ## Localização dos Componentes
 
 ### Patterns do Fabric
 - **Instalados**: `/home/peixoto/.config/fabric`
-- **Customizados**: `/media/peixoto/Portable/custom_patterns`
+- **Customizados**: `/media/peixoto/Portable/costum_patterns`
 
 ### Estrutura do Projeto
-- **Infra cognitiva**: `.ai/` na raiz do projeto
-- **Documentação**: `QWEN.md`, `README.md`, `INSTALL.md`, `SUMMARY.md`
+- **Código-fonte**: `src/` com os três módulos principais
+- **Configuração**: `config/` com o arquivo `paths.yaml`
+- **Documentação**: `docs/governance/` para infraestrutura cognitiva e `docs/legacy/` para documentação antiga
 
 ## Configurações Necessárias
+
+### Arquivo de Configuração (`config/paths.yaml`)
+```yaml
+# Lex-OS Kernel Configuration
+
+# Caminho absoluto para o seu Vault do Obsidian
+obsidian_vault_path: "/media/peixoto/Portable/inv_sa_02"
+
+# Caminho absoluto para os patterns customizados do Fabric
+custom_patterns_path: "/media/peixoto/Portable/costum_patterns"
+
+# Configurações do Zotero (Opcional se usar ENV VARS)
+zotero:
+  api_key_env: "ZOTERO_API_KEY"
+  library_id_env: "ZOTERO_LIBRARY_ID"
+```
 
 ### MCP Servers
 Configuração em `~/.qwen/settings.json`:
@@ -53,13 +64,12 @@ Configuração em `~/.qwen/settings.json`:
 ```json
 {
   "mcpServers": {
-    "zotero": {
+    "lex-os": {
       "command": "uv",
-      "args": ["run", "zotero-mcp"],
+      "args": ["run", "lex-os-kernel"],
       "env": {
-        "ZOTERO_LOCAL": "true",
-        "ZOTERO_API_KEY": "",
-        "ZOTERO_LIBRARY_ID": ""
+        "ZOTERO_API_KEY": "sua_chave_api_aqui",
+        "ZOTERO_LIBRARY_ID": "seu_id_biblioteca_aqui"
       }
     },
     "obsidian": {
@@ -71,23 +81,25 @@ Configuração em `~/.qwen/settings.json`:
 ```
 
 ### Variáveis de Ambiente para Zotero
-- `ZOTERO_LOCAL`: Usa API local (padrão: false)
 - `ZOTERO_API_KEY`: Chave de API do Zotero
 - `ZOTERO_LIBRARY_ID`: ID da biblioteca do Zotero
-- `ZOTERO_LIBRARY_TYPE`: Tipo de biblioteca (usuário/grupo)
 
 ## Fluxo de Trabalho Típico
 
-1. **Ingestão de Documentos**: Processamento de acórdãos e documentos jurídicos
-2. **Análise por Agentes**: Cada agente especializado processa sua parte
-3. **Validação e Estratégia**: Definição da linha argumentativa
-4. **Geração de TOC**: Criação do esqueleto da petição
-5. **Redação Jurídica**: Desenvolvimento dos tópicos
-6. **Provas e Cadeia de Custódia**: Integração de elementos probatórios
-7. **Sincronização com Zotero/Obsidian**: Armazenamento e organização
-8. **Geração Final**: Produção da petição com rastreabilidade
+1. **Verificação de Memória Local**: O sistema verifica o Obsidian antes de buscar externamente
+2. **Processamento com Fabric**: Execução de pipelines do Fabric para análise jurídica
+3. **Consulta ao Zotero**: Processamento de coleções específicas do Zotero
+4. **Validação Cruzada**: Verificação da integridade entre sistemas
+5. **Persistência no Obsidian**: Resultados salvos diretamente no vault
+6. **Equipes Paralelas**: Processamento concorrente de múltiplos casos
+7. **Geração Final**: Produção de relatórios e peças com rastreabilidade completa
 
 ## Servidores MCP Disponíveis
+
+### lex-os
+- **Propósito**: Orquestrador jurídico com memória (Obsidian), execução (Fabric) e fonte (Zotero)
+- **Recursos**: Verificação de memória local, execução de pipelines do Fabric, processamento de coleções Zotero
+- **Uso típico**: Análise jurídica integrada, verificação de precedentes, processamento de documentos
 
 ### obsidian-vault
 - **Propósito**: Acesso ao vault do Obsidian com informações dos processos e pesquisas jurídicas
@@ -101,13 +113,6 @@ Configuração em `~/.qwen/settings.json`:
 - **Recursos**: Centenas de patterns jurídicos e de análise legal
 - **Uso típico**: Análise de documentos jurídicos, aplicação de padrões FIRAC+, extração de informações
 
-### zotero-mcp
-- **Propósito**: Integração com biblioteca Zotero para gerenciamento de referências jurídicas
-- **Status**: Instalado e configurado (funcionando)
-- **Recursos disponíveis**: Busca em biblioteca Zotero, obtenção de metadados, recuperação de texto completo
-- **Uso atual**: Verificação de precedentes, acesso a bibliografia jurídica, consulta a documentos
-- **Configuração**: API local do Zotero habilitada, banco de dados indexado com 440 itens
-
 ## Comandos Úteis
 
 ### Fabric
@@ -115,8 +120,8 @@ Configuração em `~/.qwen/settings.json`:
 - Executar pattern: `echo "texto" | fabric -p nome_do_pattern`
 - Atualizar patterns: `fabric --update`
 
-### Zotero-MCP (após instalação)
-- Executar servidor: `uv run zotero-mcp`
+### Lex-OS Kernel (após instalação)
+- Executar servidor: `uv run lex-os-kernel`
 - Testar conexão: Verificar logs do Qwen Code
 
 ### Obsidian-MCP
@@ -131,13 +136,13 @@ Configuração em `~/.qwen/settings.json`:
 ## Solução de Problemas
 
 ### Problemas Comuns
-1. **Erro de conexão com Zotero**: Verifique se a opção de comunicação com outros aplicativos está ativada
+1. **Erro de conexão com Zotero**: Verifique se as credenciais estão configuradas corretamente
 2. **Erro de permissão no Obsidian**: Verifique se o caminho do vault está correto
 3. **Pattern do Fabric não encontrado**: Verifique se os links simbólicos estão configurados
 
 ### Logs e Depuração
 - Logs do MCP do Qwen Code: `~/.qwen/logs/`
-- Logs do Zotero: Saída do terminal ao executar o zotero-mcp
+- Logs do Lex-OS: Saída do terminal ao executar o servidor
 - Logs do Obsidian: Console do desenvolvedor do Obsidian
 
 ## Referências
@@ -145,4 +150,4 @@ Configuração em `~/.qwen/settings.json`:
 - Documentação MCP do Qwen Code: https://qwenlm.github.io/qwen-code-docs/en/users/features/mcp/
 - Documentação de subagentes: https://qwenlm.github.io/qwen-code-docs/en/users/features/sub-agents/
 - Repositório oficial do Fabric: https://github.com/danielmiessler/Fabric
-- Repositório do zotero-mcp: https://github.com/kujenga/zotero-mcp
+- Repositório do Lex-OS Kernel: https://github.com/peixoto-ops/lex-os-kernel

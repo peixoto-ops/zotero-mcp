@@ -1,157 +1,175 @@
-# Sumário do Projeto - zotero-mcp
+# Sumário do Projeto - Lex-OS Kernel
 
 ## Visão Geral
 
-O projeto zotero-mcp implementa um sistema completo de orquestração jurídica assistida por múltiplos agentes, integrado ao Zotero, Obsidian e Fabric, com foco em análise profunda de precedentes jurídicos, construção controlada de teses jurídicas, redação modular e verificável de peças processuais e preservação de cadeia de custódia e rastreabilidade probatória.
+O projeto Lex-OS Kernel implementa um Sistema Operacional Jurídico baseado no Model Context Protocol (MCP), atuando como middleware inteligente entre o Zotero, Obsidian e a engine de IA local (Fabric). O sistema permite a automação completa de workflows jurídicos com alta eficiência e rastreabilidade, com foco em análise profunda de precedentes jurídicos, construção controlada de teses jurídicas, redação modular e verificável de peças processuais e preservação de cadeia de custódia e rastreabilidade probatória.
 
 ## Componentes Principais
 
-### 1. Agentes Especializados
+### 1. Servidor MCP Lex-OS (`src/lex_os_server.py`)
 
-#### 1.1. Agente de Precedentes
+#### 1.1. Módulo de Memória (Obsidian First)
+- `check_local_memory`: Verifica a memória local (Obsidian) antes de buscar externamente
+- Implementa lógica "Memory First" para evitar buscas redundantes
+- Usa fuzzy matching para encontrar notas relevantes no vault do Obsidian
+
+#### 1.2. Módulo de Execução (Fabric Wrapper Async)
+- `run_fabric_pipeline`: Executa pipelines do Fabric para processamento de texto jurídico
+- Tipos de pipeline suportados:
+  - `analise_precedente`: Análise FIRAC+ e extração de notas
+  - `fichamento`: Sumarização e fichamento de processos
+  - `tese_check`: Verificação de fatos e acordo
+
+#### 1.3. Módulo de Orquestração Zotero
+- `process_zotero_collection`: Processa coleções específicas do Zotero
+- Requer credenciais da API Web do Zotero
+- Aplica pipelines do Fabric e salva resultados diretamente no Obsidian
+
+### 2. Sistema de Validação (`src/validation_system.py`)
+- Validação da integridade do link entre itens do Zotero e notas do Obsidian
+- Verificação da aplicação correta dos padrões Fabric nas notas
+- Sistema de auditoria para garantir consistência entre os sistemas
+- Geração de relatórios de validação em Markdown
+
+### 3. Sistema de Equipes Paralelas (`src/parallel_teams_system.py`)
+- Criação de equipes especializadas para diferentes funções jurídicas
+- Processamento paralelo de múltiplos casos
+- Atribuição de tarefas com diferentes prioridades
+- Monitoramento de status e progresso das equipes
+- Validação cruzada dos resultados
+
+### 4. Infraestrutura Cognitiva (`docs/governance/`)
+
+#### 4.1. Estrutura de Diretórios
+- `docs/governance/`: Infraestrutura cognitiva (README, identity, rules, GOVERNANCE, agentes, fluxos, patterns, schemas, prompts, AGENT_PROMPT)
+- `docs/governance/agents/`: Especificações funcionais de agentes
+- `docs/governance/flows/`: Pipelines documentais completos
+- `docs/governance/patterns/`: Padrões cognitivos reutilizáveis (Fabric)
+- `docs/governance/schemas/`: Esquemas JSON para validação formal de saídas
+- `docs/governance/prompts/`: Prompts especializados (ex: orquestrador MCP)
+- `docs/governance/AGENT_PROMPT.md`: Prompt-base comum a todos os agentes
+
+#### 4.2. Padrões do Fabric
+- Cada pattern segue a estrutura: IDENTITY and PURPOSE, STEPS, OUTPUT INSTRUCTIONS, INPUT
+- Princípios de atomicidade e statelessness
+- Uso de CLI e piping para encadeamento de operações
+
+#### 4.3. Schemas de Validação
+- Controle de qualidade e prevenção de alucinações
+- Validação estruturada de saídas dos agentes
+- Conformidade com padrões jurídicos e técnicos
+
+### 5. Agentes Especializados
+
+#### 5.1. Agente de Precedentes
 - **FIRAC+**: Estruturação lógica de decisões judiciais
 - **NER Jurídico**: Identificação de entidades específicas em textos jurídicos
 - **Classificação de precedentes**: Leading case, julgado de consolidação, tese emergente, distinguishing
 - **Geração automática de BibTeX**: Criação de entradas bibliográficas
 - **Fichamento em Markdown**: Criação de notas estruturadas
 
-#### 1.2. Agente de Contexto
+#### 5.2. Agente de Contexto
 - Consulta à base de conhecimento no Obsidian
 - Recuperação de histórico do caso e teses trabalhadas
 - Produção de contexto sintético e operacional
 
-#### 1.3. Agente de Estratégia
+#### 5.3. Agente de Estratégia
 - Análise de precedentes validados e contexto do caso
 - Definição da estratégia jurídica central
 - Validação da existência real dos precedentes
 - Utilização de ferramentas MCP para verificação em tempo real
 
-#### 1.4. Agente de TOC (Índice de Tópicos)
+#### 5.4. Agente de TOC (Índice de Tópicos)
 - Geração de esqueleto argumentativo da peça processual
 - Criação de estrutura lógica e hierárquica de argumentos
 - Produção de mapa lógico da petição
 
-#### 1.5. Agente de Redação Jurídica
+#### 5.5. Agente de Redação Jurídica
 - Desenvolvimento dos tópicos em três dimensões complementares:
   - Direito (lei e doutrina)
   - Jurisprudência
   - Questões de fato e prova
 - Integração com resultados dos agentes de precedentes e prova
 
-#### 1.6. Agente de Prova e Cadeia de Custódia
+#### 5.6. Agente de Prova e Cadeia de Custódia
 - Extração de fatos de documentos, imagens e vídeos
 - Vinculação explícita entre fato, prova e tese jurídica
 - Geração de hashes criptográficos e carimbos de tempo
 - Utilização de ferramentas MCP para investigação OSINT
 
-#### 1.7. Agente Zotero
+#### 5.7. Agente Zotero
 - Sincronização bidirecional com a biblioteca Zotero
 - Criação automática de itens bibliográficos
-- Integração com as ferramentas do zotero-mcp
+- Integração com as ferramentas do Lex-OS Kernel
 
-### 2. Infraestrutura Cognitiva (.ai/)
+### 6. Integração com MCPs (Model Context Protocols)
 
-#### 2.1. Estrutura de Diretórios
-- `.ai/`: Infraestrutura cognitiva (README, identity, rules, GOVERNANCE, agentes, fluxos, patterns, schemas, prompts, AGENT_PROMPT)
-- `.ai/agents/`: Especificações funcionais de agentes
-- `.ai/flows/`: Pipelines documentais completos
-- `.ai/patterns/`: Padrões cognitivos reutilizáveis (Fabric)
-- `.ai/schemas/`: Esquemas JSON para validação formal de saídas
-- `.ai/prompts/`: Prompts especializados (ex: orquestrador MCP)
-- `.ai/AGENT_PROMPT.md`: Prompt-base comum a todos os agentes
+#### 6.1. Lex-OS MCP
+- Conexão com o servidor Lex-OS Kernel
+- Ferramentas disponíveis: `check_local_memory`, `run_fabric_pipeline`, `process_zotero_collection`
+- Suporte a API Web do Zotero
 
-#### 2.2. Padrões do Fabric
-- Cada pattern segue a estrutura: IDENTITY and PURPOSE, STEPS, OUTPUT INSTRUCTIONS, INPUT
-- Princípios de atomicidade e statelessness
-- Uso de CLI e piping para encadeamento de operações
-
-#### 2.3. Schemas de Validação
-- Controle de qualidade e prevenção de alucinações
-- Validação estruturada de saídas dos agentes
-- Conformidade com padrões jurídicos e técnicos
-
-### 3. Integração com MCPs (Model Context Protocols)
-
-#### 3.1. Zotero MCP
-- Conexão com a biblioteca Zotero
-- Ferramentas disponíveis: `zotero_search_items`, `zotero_item_metadata`, `zotero_item_fulltext`
-- Suporte a API local e API Web
-
-#### 3.2. Obsidian MCP
+#### 6.2. Obsidian MCP
 - Conexão com o vault do Obsidian
 - Acesso a conteúdo, criação e edição de notas
 - Integração com o plugin Local REST API
 
-#### 3.3. Outras Ferramentas MCP
+#### 6.3. Outras Ferramentas MCP
 - Integração com `serper`, `tavily-search`, `brave-search` para investigação
 - Uso de ferramentas para validação e verificação de informações
 
-### 4. Orquestração com Subagentes
+### 7. Orquestração com Subagentes
 
-#### 4.1. Subagente Orquestrador
+#### 7.1. Subagente Orquestrador
 - Conhecimento das subrotinas do fluxo jurídico
 - Capacidade de identificar o ponto específico do fluxo
 - Mecanismo de delegação para subagentes pré-configurados
 
-#### 4.2. Arquitetura de Subagentes
+#### 7.2. Arquitetura de Subagentes
 - Cada subagente é configurado como arquivo Markdown com YAML frontmatter
 - Definição de ferramentas específicas e prompts de sistema
 - Configuração de níveis de confiança e permissões
 
-#### 4.3. Processamento Paralelo
+#### 7.3. Processamento Paralelo
 - Sistema para organizar as saídas dos subagentes
 - Mecanismos para usar saídas em outros processos paralelamente
 - Filas de processamento e sincronização
 
-### 5. Pipeline Completo
-
-#### 5.1. Integração dos Componentes
-- Conexão de todos os agentes especializados no fluxo jurídico contínuo
-- Interfaces de comunicação entre diferentes agentes
-- Mecanismos de validação entre etapas do pipeline
-
-#### 5.2. Automação do Fluxo
-- Pipeline desde a ingestão de documentos até geração da petição final
-- Gatilhos automáticos para ativação de agentes específicos
-- Filas de tarefas para processamento contínuo
-
-#### 5.3. Rastreabilidade e Cadeia de Custódia
-- Sistema de rastreabilidade em todas as etapas
-- Logs detalhados de todas as operações
-- Carimbos de tempo criptograficamente seguros
-
 ## Estrutura do Projeto
 
 ```
-zotero-mcp/
-├── .ai/                    # Infraestrutura cognitiva
-│   ├── agents/            # Especificações de agentes
-│   ├── flows/             # Pipelines de processamento
-│   ├── patterns/          # Padrões do Fabric
-│   ├── schemas/           # Esquemas de validação
-│   └── prompts/           # Prompts de agentes
+lex-os-kernel/
+├── config/                 # Arquivos de configuração do sistema
+│   └── paths.yaml         # Configuração de caminhos e variáveis do sistema
+├── src/                   # Código-fonte do servidor e sistemas auxiliares
+│   ├── lex_os_server.py   # Servidor MCP com os três módulos principais
+│   ├── validation_system.py # Sistema de validação de referências cruzadas
+│   └── parallel_teams_system.py # Sistema de equipes paralelas
+├── docs/                  # Documentação do projeto
+│   ├── governance/        # Infraestrutura cognitiva
+│   └── legacy/            # Documentação antiga e arquivos migrados
 ├── .github/               # Configurações de CI/CD
-├── QWEN.md               # Documentação técnica detalhada
+├── pyproject.toml         # Configuração de dependências do projeto
 ├── README.md             # Visão geral do projeto
+├── README_LEX_OS.md      # Documentação completa do sistema Lex-OS
 ├── INSTALL.md            # Instruções de instalação e configuração
 ├── CONTEXT.md            # Contexto para sessões futuras
 ├── SUMMARY.md            # Sumário do projeto (este arquivo)
-└── paths.yaml            # Configuração de caminhos
+└── .qwen/                # Configurações do projeto
 ```
 
 ## Fluxo de Trabalho Típico
 
-1. **Ingestão de Documentos**: Processamento de acórdãos, leis e outros documentos jurídicos
-2. **Análise por Agentes**: Cada agente especializado processa sua parte do documento
-3. **Validação e Estratégia**: Agente de estratégia define a linha argumentativa
-4. **Geração de TOC**: Criação do esqueleto da petição
-5. **Redação Jurídica**: Desenvolvimento dos tópicos com base nas três dimensões
-6. **Provas e Cadeia de Custódia**: Integração de elementos probatórios
-7. **Sincronização com Zotero/Obsidian**: Armazenamento e organização do conhecimento
-8. **Geração Final**: Produção da petição com rastreabilidade completa
+1. **Verificação de Memória Local**: O sistema verifica o Obsidian antes de buscar externamente
+2. **Processamento com Fabric**: Execução de pipelines do Fabric para análise jurídica
+3. **Consulta ao Zotero**: Processamento de coleções específicas do Zotero
+4. **Validação Cruzada**: Verificação da integridade entre sistemas
+5. **Persistência no Obsidian**: Resultados salvos diretamente no vault
+6. **Equipes Paralelas**: Processamento concorrente de múltiplos casos
+7. **Geração Final**: Produção de relatórios e peças com rastreabilidade completa
 
 ## Documentação Adicional
 
 - **QWEN.md**: Detalhes técnicos sobre cada componente e fase do projeto
-- **.ai/README.md**: Especificação da infraestrutura cognitiva
-- **Arquivos de exemplo**: Em cada subdiretório de `.ai/`
+- **docs/governance/README.md**: Especificação da infraestrutura cognitiva
+- **Arquivos de exemplo**: Em cada subdiretório de `docs/governance/`

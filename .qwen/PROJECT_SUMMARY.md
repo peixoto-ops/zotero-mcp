@@ -9,7 +9,7 @@ Implementar um Sistema Operacional Jurídico (Lex-OS) completo que integra Zoter
 - **Pattern Governance**: Padrões FIRAC+ refinados e matrizes de comparação jurisprudencial implementadas
 - **Team Abstraction**: Sistema de equipes paralelas com diferentes papéis (pesquisa, análise, estratégia, redação, evidência)
 - **Context Management**: Sistema "Memory First" com verificação local antes de busca externa
-- **File Structure**: 
+- **File Structure**:
   - `src/lex_os_server.py`: Servidor MCP com os três módulos principais
   - `src/validation_system.py`: Sistema de validação de referências cruzadas
   - `src/parallel_teams_system.py`: Sistema de equipes paralelas para processamento de casos
@@ -33,8 +33,14 @@ Implementar um Sistema Operacional Jurídico (Lex-OS) completo que integra Zoter
 - [COMPLETED] Refinamento dos padrões de análise jurídica FIRAC+ e comparação de precedentes
 - [COMPLETED] Automação de fluxos jurídicos complexos com persistência desacoplada
 - [COMPLETED] Documentação completa do sistema e instruções de configuração
-- [COMPLETED] Criação de arquivos README_LEX_OS.md, MCP_SERVER_SETUP.md, CONTEXT_LEX_OS.md, SUMMARY_LEX_OS.md, INSTALL_LEX_OS.md e QWEN_LEX_OS.md
+- [COMPLETED] Criação de arquivos README_LEX_OS.md, MCP_SERVER_SETUP.md, INSTALL_LEX_OS.md e QWEN_LEX_OS.md
 - [COMPLETED] Atualização de arquivos principais (README.md, SUMMARY.md, INSTALL.md, QWEN.md) para refletir a nova arquitetura Lex-OS
+- [COMPLETED] Refatoração completa do repositório para eliminar a estrutura "Frankenstein"
+- [COMPLETED] Organização da hierarquia de diretórios com `config`, `src`, `docs/legacy`, `docs/governance`
+- [COMPLETED] Centralização da configuração no arquivo `config/paths.yaml`
+- [COMPLETED] Implementação do servidor com AsyncIO real e tratamento adequado de subprocessos
+- [COMPLETED] Eliminação de arquivos duplicados em `docs/legacy` (SUMMARY_LEX_OS.md, QWEN_LEX_OS.md, CONTEXT_LEX_OS.md)
+- [COMPLETED] Atualização de todas as referências aos arquivos eliminados nos documentos principais
 
 ## Current Plan
 1. [DONE] Implementar servidor MCP Lex-OS com os três módulos principais
@@ -47,11 +53,13 @@ Implementar um Sistema Operacional Jurídico (Lex-OS) completo que integra Zoter
 8. [DONE] Dimensionar sistema para processamento paralelo
 9. [DONE] Documentar completamente o sistema Lex-OS
 10. [DONE] Atualizar toda a documentação do projeto
-11. [TODO] Otimizar performance do sistema de equipes paralelas
-12. [TODO] Expandir cobertura de padrões jurídicos no sistema de validação
-13. [TODO] Realizar testes de integração completa do sistema Lex-OS
+11. [DONE] Refatorar estrutura de arquivos para eliminar "Frankenstein architecture"
+12. [DONE] Eliminar arquivos duplicados e atualizar referências
+13. [TODO] Otimizar performance do sistema de equipes paralelas
+14. [TODO] Expandir cobertura de padrões jurídicos no sistema de validação
+15. [TODO] Realizar testes de integração completa do sistema Lex-OS
 
 ---
 
 ## Summary Metadata
-**Update time**: 2026-01-15T08:16:20.485Z 
+**Update time**: 2026-01-15T12:48:24.460Z 

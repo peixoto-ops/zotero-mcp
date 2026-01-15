@@ -5,7 +5,7 @@ O Lex-OS (Legal Operating System) é um servidor Python que implementa um Sistem
 ## Recursos
 
 - **Sistema de Memória (Obsidian First)**: Verifica a memória local antes de buscar externamente
-- **Sistema de Execução (Fabric Wrapper)**: Executa pipelines do Fabric para processamento jurídico
+- **Sistema de Execução (Fabric Wrapper Async)**: Executa pipelines do Fabric para processamento jurídico
 - **Sistema de Orquestração Zotero**: Processa coleções específicas do Zotero com escopo definido
 - **Sistema de Validação**: Verifica integridade das referências cruzadas entre sistemas
 - **Sistema de Equipes Paralelas**: Processa múltiplos casos jurídicos concorrentemente
@@ -23,16 +23,16 @@ Implementa três módulos principais:
 - Implementa lógica "Memory First" para evitar buscas redundantes
 - Usa fuzzy matching para encontrar notas relevantes no vault do Obsidian
 
-#### Módulo de Execução (Fabric Wrapper)
+#### Módulo de Execução (Fabric Wrapper Async)
 - `run_fabric_pipeline`: Executa pipelines do Fabric para processamento de texto jurídico
 - Tipos de pipeline suportados:
   - `analise_precedente`: Análise FIRAC+ e extração de notas
-  - `fichamento_simples`: Sumarização e fichamento de processos
-  - `verificacao_tese`: Verificação de fatos e acordo
+  - `fichamento`: Sumarização e fichamento de processos
+  - `tese_check`: Verificação de fatos e acordo
 
 #### Módulo de Orquestração Zotero
 - `process_zotero_collection`: Processa coleções específicas do Zotero
-- Restringe operações por coleção (não permite leitura da biblioteca inteira)
+- Requer credenciais da API Web do Zotero
 - Aplica pipelines do Fabric e salva resultados diretamente no Obsidian
 - Implementa persistência desacoplada da conversação com o LLM
 
@@ -55,7 +55,7 @@ Implementa três módulos principais:
 - **Sistema de Validação**: Verificação cruzada entre sistemas
 - **Sistema de Equipes Paralelas**: Processamento concorrente de casos
 - **Padrões de Análise Jurídica**: Estruturas FIRAC+, matrizes de comparação
-- **Especificação Cognitiva**: Pasta `.ai/` com contratos formais de análise
+- **Especificação Cognitiva**: Pasta `docs/governance/` com contratos formais de análise
 - **Fluxos Automatizados**: Pipelines completos de processamento jurídico
 
 ## Estrutura do Projeto
@@ -64,17 +64,17 @@ Implementa três módulos principais:
   - `lex_os_server.py` - Servidor MCP com os três módulos principais
   - `validation_system.py` - Sistema de validação de referências cruzadas
   - `parallel_teams_system.py` - Sistema de equipes paralelas
-- `.ai/` - Infraestrutura cognitiva (README, identity, rules, GOVERNANCE, agentes, fluxos, patterns, schemas, prompts, AGENT_PROMPT, catalog, orchestrators, teams, consolidation, integration)
+- `config/` - Arquivos de configuração do sistema
+  - `paths.yaml` - Configuração de caminhos e variáveis do sistema
+- `docs/` - Documentação do projeto
+  - `governance/` - Infraestrutura cognitiva (README, identity, rules, GOVERNANCE, agentes, fluxos, patterns, schemas, prompts, AGENT_PROMPT, catalog, orchestrators, teams, consolidation, integration)
+  - `legacy/` - Documentação antiga e arquivos migrados
+- `pyproject.toml` - Configuração de dependências do projeto
 - `.github/` - Configurações de CI/CD e templates de contribuição
-- `QWEN.md` - Documentação técnica detalhada do sistema
 - `README.md` - Visão geral do sistema
-- `README_LEX_OS.md` - Documentação completa do sistema Lex-OS
-- `MCP_SERVER_SETUP.md` - Instruções de configuração do servidor MCP
-- `CONTEXT_LEX_OS.md` - Contexto completo do sistema Lex-OS
 - `INSTALL.md` - Instruções detalhadas de instalação e configuração
 - `CONTEXT.md` - Contexto completo para sessões futuras
 - `SUMMARY.md` - Sumário dos componentes principais
-- `paths.yaml` - Configuração de caminhos e variáveis do sistema
 - `.qwen/` - Configurações do projeto
 
 ## Objetivo
@@ -90,8 +90,8 @@ Criar um sistema de engenharia jurídica com:
 
 ## Configuração
 
-Para detalhes de configuração dos caminhos e variáveis do sistema, consulte o arquivo `paths.yaml`.
+Para detalhes de configuração dos caminhos e variáveis do sistema, consulte o arquivo `config/paths.yaml`.
 
-Para instruções de configuração do servidor MCP, consulte `MCP_SERVER_SETUP.md`.
+Para instruções de configuração do servidor MCP, consulte este mesmo arquivo ou `INSTALL.md`.
 
-Para detalhes técnicos, consulte `README_LEX_OS.md` e `QWEN.md`.
+Para detalhes técnicos, consulte `QWEN.md` e `SUMMARY.md`.

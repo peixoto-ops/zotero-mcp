@@ -1,100 +1,50 @@
-# Documentação Técnica do Sistema Lex-OS
+# Contexto do Projeto zotero-mcp
 
 ## Visão Geral do Projeto
-O Lex-OS (Legal Operating System) é um servidor Python que implementa um Sistema Operacional Jurídico baseado no Model Context Protocol (MCP). O sistema atua como middleware inteligente entre o Zotero, Obsidian e a engine de IA local (Fabric), permitindo a automação completa de workflows jurídicos com alta eficiência e rastreabilidade.
+zotero-mcp é um servidor Python que implementa o Model Context Protocol (MCP) para o Zotero, fornecendo acesso à sua biblioteca Zotero dentro de assistentes de IA. O projeto permite que ferramentas de IA como o Claude Desktop interajam com sua biblioteca Zotero, permitindo fluxos de trabalho de pesquisa aprimorados ao conectar seu sistema de gerenciamento de referências com capacidades de IA.
 
 ## Propósito
-O projeto Lex-OS fornece uma plataforma integrada para:
-- Análise automatizada de precedentes jurídicos
-- Processamento de coleções específicas do Zotero
-- Fichamento estruturado de processos e decisões
-- Produção assistida de peças jurídicas
-- Validação cruzada entre sistemas (Zotero, Obsidian, Fabric)
-- Processamento paralelo de múltiplos casos jurídicos
-
-## Arquitetura do Sistema
-
-### 1. Servidor MCP Lex-OS (`src/lex_os_server.py`)
-Implementa três módulos principais:
-
-#### Módulo de Memória (Obsidian First)
-- `check_local_memory`: Verifica a memória local (Obsidian) antes de buscar externamente
-- Implementa lógica "Memory First" para evitar buscas redundantes
-- Usa fuzzy matching para encontrar notas relevantes no vault do Obsidian
-
-#### Módulo de Execução (Fabric Wrapper)
-- `run_fabric_pipeline`: Executa pipelines do Fabric para processamento de texto jurídico
-- Tipos de pipeline suportados:
-  - `analise_precedente`: Análise FIRAC+ e extração de notas
-  - `fichamento_simples`: Sumarização e fichamento de processos
-  - `verificacao_tese`: Verificação de fatos e acordo
-
-#### Módulo de Orquestração Zotero
-- `process_zotero_collection`: Processa coleções específicas do Zotero
-- Restringe operações por coleção (não permite leitura da biblioteca inteira)
-- Aplica pipelines do Fabric e salva resultados diretamente no Obsidian
-- Implementa persistência desacoplada da conversação com o LLM
-
-### 2. Sistema de Validação (`src/validation_system.py`)
-- Validação da integridade do link entre itens do Zotero e notas do Obsidian
-- Verificação da aplicação correta dos padrões Fabric nas notas
-- Sistema de auditoria para garantir consistência entre os sistemas
-- Geração de relatórios de validação em Markdown
-
-### 3. Sistema de Equipes Paralelas (`src/parallel_teams_system.py`)
-- Criação de equipes especializadas para diferentes funções jurídicas
-- Processamento paralelo de múltiplos casos
-- Atribuição de tarefas com diferentes prioridades
-- Monitoramento de status e progresso das equipes
-- Validação cruzada dos resultados
+O projeto zotero-mcp fornece uma ponte entre assistentes de IA e sua biblioteca Zotero, permitindo que ferramentas de IA:
+- Pesquisem sua biblioteca Zotero
+- Acessem metadados detalhados sobre suas referências
+- Recuperem conteúdo de texto completo de seus PDFs
 
 ## Recursos Principais
-
-### Ferramentas Disponíveis
-- **check_local_memory**: Verifica informações localmente antes de buscar externamente
-- **run_fabric_pipeline**: Executa pipelines do Fabric para processamento jurídico
-- **process_zotero_collection**: Processa coleções específicas do Zotero com pipeline do Fabric
-
-### Padrões de Análise Jurídica
-- **FIRAC+ Aprimorado**: Estrutura para análise de precedentes jurídicos
-- **Matriz de Comparação de Precedentes**: Comparação sistemática entre decisões
-- **Análise de Proporcionalidade**: Avaliação de medidas cautelares
-- **Análise de Medidas Cautelares Alternativas**: Checklist para aplicação
-
-### Sistema de Equipes
-- **Equipe de Pesquisa de Precedentes**: Especializada em análise jurisprudencial
-- **Equipe de Análise de Caso**: Foco na análise dos elementos do caso específico
-- **Equipe de Planejamento Estratégico**: Definição da estratégia jurídica
-- **Equipe de Redação de Documentos**: Produção de peças jurídicas
-- **Equipe de Processamento de Evidências**: Tratamento de provas e cadeia de custódia
+- **zotero_search_items**: Pesquisa itens na sua biblioteca Zotero usando consultas de texto
+- **zotero_item_metadata**: Obtém informações detalhadas de metadados sobre itens específicos do Zotero
+- **zotero_item_fulltext**: Obtém conteúdo de texto completo de itens específicos do Zotero (conteúdo do PDF)
 
 ## Instalação e Configuração
 
 ### Pré-requisitos
-- Ambiente Python 3.8+
+- Ambiente Python
 - Aplicativo Zotero Desktop (para acesso à API local) OU credenciais da API Web do Zotero
-- Obsidian Vault configurado
-- Fabric patterns instalado
 
-### Configuração do Sistema
-1. Configure o caminho do seu vault do Obsidian no arquivo `paths.yaml`
-2. Configure as credenciais do Zotero (ou habilite o modo local)
-3. Verifique se o caminho para os patterns customizados está correto
+### Opções de Configuração da API Zotero
+
+#### Opção 1: API Local (Recomendado para uso local)
+1. Abra o Zotero e vá para "Configurações do Zotero"
+2. Na aba "Avançado", marque a caixa que diz "Permitir que outros aplicativos neste computador se comuniquem com o Zotero"
+
+#### Opção 2: API Web
+1. Crie uma chave de API nas configurações da sua conta Zotero: https://www.zotero.org/settings/keys
+2. Anote seu ID de Biblioteca (geralmente seu ID de Usuário)
 
 ### Variáveis de Ambiente
 - `ZOTERO_LOCAL=true`: Usa a API local do Zotero (padrão: false)
 - `ZOTERO_API_KEY`: Sua chave de API do Zotero (não é necessária para a API local)
 - `ZOTERO_LIBRARY_ID`: Seu ID de biblioteca do Zotero (seu ID de usuário para bibliotecas de usuário, não é necessário para a API local)
+- `ZOTERO_LIBRARY_TYPE`: Tipo de biblioteca (usuário ou grupo, padrão: usuário)
 
-### Integração com Qwen Code
-Para usar com o Qwen Code, adicione o seguinte à sua configuração mcpServers:
+### Integração com Claude Desktop
+Para usar com Claude Desktop e uvx, adicione o seguinte à sua configuração mcpServers:
 
 ```json
 {
   "mcpServers": {
-    "lex-os": {
-      "command": "python",
-      "args": ["/caminho/para/seu/projeto/src/lex_os_server.py"],
+    "zotero": {
+      "command": "uvx",
+      "args": ["--upgrade", "zotero-mcp"],
       "env": {
         "ZOTERO_LOCAL": "true",
         "ZOTERO_API_KEY": "",
@@ -105,31 +55,50 @@ Para usar com o Qwen Code, adicione o seguinte à sua configuração mcpServers:
 }
 ```
 
-## Uso do Sistema
+### Uso com Docker
+Para implantação com Docker usando a API Web do Zotero:
 
-### Executar o Servidor
-```bash
-python src/lex_os_server.py --host localhost --port 8000
+```json
+{
+  "mcpServers": {
+    "zotero": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-e", "ZOTERO_API_KEY=SUA_CHAVE_API",
+        "-e", "ZOTERO_LIBRARY_ID=SEU_ID_BIBLIOTECA",
+        "ghcr.io/kujenga/zotero-mcp:main"
+      ],
+    }
+  }
+}
 ```
 
-### Exemplo de Uso das Ferramentas
-```python
-# Verificar memória local antes de buscar externamente
-await check_local_memory("prisão preventiva estelionato", threshold=0.7)
+## Configuração de Desenvolvimento
+1. Clone este repositório
+2. Instale as dependências com uv: `uv sync`
+3. Crie um arquivo .env na raiz do projeto com as variáveis de ambiente mencionadas acima
 
-# Executar pipeline do Fabric para análise de precedente
-await run_fabric_pipeline(texto_decisao, "analise_precedente")
+## Testes
+Para executar a suíte de testes:
+```
+uv run pytest
+```
 
-# Processar coleção específica do Zotero
-await process_zotero_collection("HC_Precedents", "Analisar casos de estelionato")
+## Ferramentas de Desenvolvimento
+Para desenvolvimento e testes locais, você pode usar o MCP Inspector:
+```
+npx @modelcontextprotocol/inspector uv run zotero-mcp
 ```
 
 ## Contexto do Projeto para Qwen Code
-Este diretório é especificamente para configurar e usar o Lex-OS com o Qwen Code. O objetivo é integrar a funcionalidade do Zotero, Obsidian e Fabric com o Qwen Code para permitir fluxos de trabalho jurídicos que aproveitem tanto o gerenciamento de referências quanto as capacidades de IA.
+Este diretório é especificamente para configurar e usar o zotero-mcp com o Qwen Code. O objetivo é integrar a funcionalidade do Zotero com o Qwen Code para permitir fluxos de trabalho de pesquisa que aproveitem tanto o gerenciamento de referências quanto as capacidades de IA.
 
 ## Estrutura .ai/ — Infraestrutura Cognitiva do Projeto
 
-A pasta `.ai/` define a **infraestrutura cognitiva do projeto Lex-OS**.
+A pasta `.ai/` define a **infraestrutura cognitiva do projeto zotero-mcp**.
 
 Ela descreve **como os agentes pensam, classificam, extraem e estruturam
 informação jurídica**, servindo como contrato formal entre:
@@ -178,15 +147,14 @@ A governança cognitiva existe para garantir que:
 - e nenhuma lógica cognitiva fique implícita no código executável.
 
 ## Integração com MCP e Subagentes do Qwen Code
-O sistema Lex-OS implementa um MCP com três módulos principais que podem ser usados por subagentes do Qwen Code:
+Será necessário adaptar a instalação às instruções contidas nas seguintes documentações:
 
-- **check_local_memory**: Para verificação de informações locais antes de busca externa
-- **run_fabric_pipeline**: Para processamento de texto jurídico usando padrões Fabric
-- **process_zotero_collection**: Para processamento de coleções específicas do Zotero
+- Documentação para MCP do Qwen Code: https://qwenlm.github.io/qwen-code-docs/en/users/features/mcp/
+- Documentação para subagentes: https://qwenlm.github.io/qwen-code-docs/en/users/features/sub-agents/
 
-A arquitetura permite que um subagente orquestrador identifique o ponto específico do fluxo jurídico e delegue as funções para os módulos MCP pré-configurados, organizando-os diante do contexto específico.
+A ideia é verificar se é possível atribuir as ações aos subagentes que estivessem organizadas em MCPs. Assim poderíamos ter um subagente orquestrador que tivesse conhecimentos das subrotinas do fluxo, identificasse o ponto específico e delegasse as funções para os subagentes pré-configurados, apenas os organizando diante do contexto específico.
 
-As saídas dos módulos MCP podem ser organizadas para aproveitar o potencial de usar cada uma delas em outros processos paralelamente.
+As saídas dos subagentes poderiam também ser organizadas para aproveitarmos o potencial de usar cada uma delas em outros processos paralelamente.
 
 ## Fase 1: Configuração do MCP do Obsidian
 
@@ -224,17 +192,18 @@ As saídas dos módulos MCP podem ser organizadas para aproveitar o potencial de
 - Organização de tags: Adicionar, remover e renomear tags em todo o vault
 - Capacidades de pesquisa: Realizar pesquisas abrangentes no conteúdo do vault
 
-## Fase 2: Integração do Lex-OS MCP
+## Fase 2: Integração do Zotero MCP
 
-### Configuração do servidor Lex-OS
-- Utilizar o arquivo `src/lex_os_server.py` como base
-- Instalar dependências com `pip install fastmcp pyzotero pyyaml`
+### Configuração do servidor zotero-mcp
+- Utilizar o repositório kujenga/zotero-mcp como base
+- Instalar dependências com `uv sync` (ou pip, se uv não estiver disponível)
 - Criar arquivo .env com as variáveis de ambiente necessárias
 
 ### Variáveis de ambiente necessárias
 - `ZOTERO_LOCAL=true`: Usa a API local do Zotero (padrão: false)
 - `ZOTERO_API_KEY`: Sua chave de API do Zotero (não é necessária para a API local)
-- `ZOTERO_LIBRARY_ID`: Seu ID de biblioteca do Zotero (seu ID de usuário para bibliotecas de usuário, não é necessária para a API local)
+- `ZOTERO_LIBRARY_ID`: Seu ID de biblioteca do Zotero (seu ID de usuário para bibliotecas de usuário, não é necessário para a API local)
+- `ZOTERO_LIBRARY_TYPE`: Tipo de biblioteca (usuário ou grupo, padrão: usuário)
 
 ### Configuração da API do Zotero
 #### Opção 1: API local (recomendada para uso local)
@@ -249,9 +218,9 @@ As saídas dos módulos MCP podem ser organizadas para aproveitar o potencial de
 ```json
 {
   "mcpServers": {
-    "lex-os": {
-      "command": "python",
-      "args": ["/caminho/para/seu/projeto/src/lex_os_server.py"],
+    "zotero": {
+      "command": "uv",
+      "args": ["run", "zotero-mcp"],
       "env": {
         "ZOTERO_LOCAL": "true",
         "ZOTERO_API_KEY": "",
@@ -263,9 +232,9 @@ As saídas dos módulos MCP podem ser organizadas para aproveitar o potencial de
 ```
 
 ### Ferramentas disponíveis
-- `check_local_memory`: Verifica a memória local (Obsidian) antes de buscar externamente
-- `run_fabric_pipeline`: Executa pipelines do Fabric para processamento de texto jurídico
-- `process_zotero_collection`: Processa coleções específicas do Zotero com pipeline do Fabric
+- `zotero_search_items`: Pesquisa itens na sua biblioteca Zotero usando uma consulta de texto
+- `zotero_item_metadata`: Obtém informações detalhadas de metadados sobre um item específico do Zotero
+- `zotero_item_fulltext`: Obtém o texto completo de um item específico do Zotero (ou seja, conteúdo do PDF)
 
 ## Fase 3: Desenvolvimento dos agentes especializados
 
@@ -361,10 +330,10 @@ As saídas dos módulos MCP podem ser organizadas para aproveitar o potencial de
 - Criação automática de itens bibliográficos
 - Geração de links cruzados entre referências e notas
 - Exportação e importação de metadados e anotações
-- Integração com as ferramentas do Lex-OS MCP:
-  - Uso de `process_zotero_collection` para processamento de coleções específicas
-  - Aplicação de `run_fabric_pipeline` para análise de itens do Zotero
-  - Utilização de `check_local_memory` para verificação de informações locais
+- Integração com as ferramentas do zotero-mcp:
+  - Uso de `zotero_search_items` para pesquisa em toda a biblioteca
+  - Aplicação de `zotero_item_metadata` para obter detalhes de metadados
+  - Utilização de `zotero_item_fulltext` para acesso ao conteúdo completo dos itens
 - Conversão automática de formatos bibliográficos (BibTeX, ABNT, etc.)
 - Validação de integridade dos metadados e referências
 - Atualização automática de informações de itens existentes
@@ -383,10 +352,10 @@ As saídas dos módulos MCP podem ser organizadas para aproveitar o potencial de
   - Mapeamento de sites com `tavily-map` para preservação de conteúdo
   - Uso de `brave_local_search` para investigação de empresas e locais
 
-- Integração do Agente Zotero com as ferramentas do Lex-OS MCP:
-  - Conexão com `process_zotero_collection` para processamento de coleções específicas
-  - Aplicação de `run_fabric_pipeline` para análise de itens do Zotero
-  - Utilização de `check_local_memory` para verificação de informações locais
+- Integração do Agente Zotero com as ferramentas do zotero-mcp:
+  - Conexão com `zotero_search_items` para pesquisa em toda a biblioteca
+  - Aplicação de `zotero_item_metadata` para obter detalhes de metadados
+  - Utilização de `zotero_item_fulltext` para acesso ao conteúdo completo dos itens
 
 - Configuração de segurança e controle:
   - Estabelecimento de níveis de confiança para diferentes servidores MCP
@@ -425,7 +394,7 @@ As saídas dos módulos MCP podem ser organizadas para aproveitar o potencial de
 
 ### Organização do contexto específico
 - Desenvolvimento de sistema para organizar subagentes diante do contexto específico
-- Criação de mecanismos para passação de contexto entre subagentes
+- Criação de mecanismos para passagem de contexto entre subagentes
 - Implementação de histórico de contexto compartilhado
 - Definição de protocolos de comunicação entre subagentes
 - Estabelecimento de limites claros de responsabilidade para cada subagente
@@ -503,11 +472,10 @@ As saídas dos módulos MCP podem ser organizadas para aproveitar o potencial de
 
 Para carregar o contexto completo do projeto em sessões futuras, consulte:
 
-- `README_LEX_OS.md` - Visão geral do sistema Lex-OS
-- `INSTALL_LEX_OS.md` - Instruções detalhadas de instalação e configuração do Lex-OS
-- `MCP_SERVER_SETUP.md` - Instruções de configuração do servidor MCP
-- `CONTEXT.md` - Contexto completo do sistema Lex-OS
-- `SUMMARY.md` - Sumário dos componentes principais do Lex-OS
+- `README.md` - Visão geral do sistema
+- `INSTALL.md` - Instruções detalhadas de instalação e configuração
+- `CONTEXT.md` - Contexto completo para sessões futuras
+- `SUMMARY.md` - Sumário dos componentes principais
 - `paths.yaml` - Configuração de caminhos e variáveis do sistema
 - `.ai/` - Infraestrutura cognitiva (agentes, fluxos, patterns, schemas, prompts)
 
@@ -517,3 +485,6 @@ Para detalhes sobre a estrutura de diretórios e comandos úteis do Fabric, cons
 
 - `.ai/GOVERNANCE.md` - Princípios de governança cognitiva
 - Documentação oficial do Fabric: https://github.com/danielmiessler/Fabric
+
+## Licença
+Licença MIT
