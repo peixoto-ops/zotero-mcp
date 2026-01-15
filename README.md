@@ -17,6 +17,10 @@ O sistema é um **orquestrador de produção jurídica** que:
 - **Sincroniza com Zotero** para gerenciamento de referências bibliográficas
 - **Conecta ao Obsidian** para armazenamento e organização de conhecimento
 - **Implementa subagentes** com responsabilidades bem definidas e orquestração inteligente
+- **Utiliza múltiplos servidores MCP** para diferentes funções:
+  - `obsidian-vault`: Acesso ao vault do Obsidian com informações dos processos e pesquisas
+  - `obsidian-costum-patterns`: Acesso ao diretório de patterns do Fabric para análise jurídica
+  - `zotero-mcp`: Integração com biblioteca Zotero (instalado e funcionando)
 
 ## Componentes Principais
 

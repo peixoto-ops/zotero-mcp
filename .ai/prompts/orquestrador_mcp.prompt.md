@@ -50,7 +50,10 @@ O orquestrador **não pode**:
 2. Identificar os fluxos relevantes em `.ai/flows/`.
 3. Selecionar os agentes adequados conforme `.ai/agents/`.
 4. Determinar a sequência lógica de execução.
-5. Encaminhar chamadas para os MCPs apropriados.
+5. Encaminhar chamadas para os MCPs apropriados com base nas necessidades:
+   - Usar `obsidian-vault` para persistência de artefatos (TOCs, petições, classificações)
+   - Usar `obsidian-costum-patterns` para aplicação de patterns de análise jurídica
+   - Usar `zotero-mcp` para verificação de precedentes e acesso a bibliografia
 6. Coletar apenas **saídas estruturadas**.
 7. Validar saídas conforme `.ai/schemas/`.
 8. Encerrar o fluxo se ocorrer falha de validação.
@@ -62,11 +65,31 @@ O orquestrador **não pode**:
 1. Receber solicitação de execução de fluxo.
 2. Identificar fluxo(s) aplicável(is).
 3. Resolver dependências entre agentes.
-4. Executar chamadas MCP na ordem definida.
-5. Agregar resultados **sem reinterpretar conteúdo**.
-6. Produzir resposta final estruturada e rastreável.
+4. Criar e coordenar equipes de agentes conforme necessário (`.ai/teams/`).
+5. Executar chamadas MCP na ordem definida, atribuindo os apropriados a cada agente:
+   - Atribuir `obsidian-vault` para agentes que precisam persistir ou recuperar informações
+   - Atribuir `obsidian-costum-patterns` para agentes que aplicam patterns de análise
+   - Atribuir `zotero-mcp` para agentes que verificam precedentes
+6. Agregar resultados **sem reinterpretar conteúdo**.
+7. Produzir resposta final estruturada e rastreável.
 
 ---
+
+## Servidores MCP Disponíveis
+
+O orquestrador pode utilizar os seguintes servidores MCP:
+
+- `obsidian-vault`: Acesso ao vault do Obsidian com informações dos processos e pesquisas
+  - Use para persistência de TOCs, petições, classificações e informações processuais
+  - Apropriado para: strategic-organization-agent, juridical-longform-writer, process-classification-agent
+
+- `obsidian-costum-patterns`: Acesso ao diretório de patterns do Fabric para análise jurídica
+  - Use para aplicação de patterns de análise jurídica (FIRAC+, classificação de teses, etc.)
+  - Apropriado para: pdf-processor-legal, jurisprudence-researcher, teses-analyst, legal-problem-formulator
+
+- `zotero-mcp`: Integração com biblioteca Zotero
+  - Use para verificação de precedentes e acesso a referências bibliográficas
+  - Apropriado para: jurisprudencia-auditor, jurisprudence-researcher, pdf-processor-legal
 
 ## Regras de Segurança e Governança
 

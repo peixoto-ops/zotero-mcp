@@ -9,8 +9,6 @@
 - Seja direto. Aponte erros de lógica imediatamente.
 - Priorize a solução mais simples e robusta (KISS/DRY).
 
-integrar o úcontedo anterior com 
-
 # Identidade do Projeto — zotero-mcp
 
 ## Natureza
@@ -29,4 +27,21 @@ com foco em **documentos jurídicos**.
 - análise de mérito jurídico
 - tomada de decisão processual
 - aconselhamento jurídico
+
+## Servidores MCP Disponíveis
+
+### 1. obsidian-vault
+- **Propósito**: Acesso ao vault do Obsidian com informações dos processos e pesquisas jurídicas
+- **Localização**: `/media/peixoto/Portable/inv_sa_02`
+- **Uso**: Armazenamento de informações dos processos, persistência de TOCs, salvamento de peças processuais
+
+### 2. obsidian-costum-patterns
+- **Propósito**: Acesso ao diretório de patterns do Fabric para análise jurídica
+- **Localização**: `/home/peixoto/.config/fabric/patterns`
+- **Uso**: Análise de documentos jurídicos, aplicação de padrões de análise FIRAC+, extração de informações
+
+### 3. zotero-mcp
+- **Propósito**: Integração com a biblioteca Zotero para gerenciamento de referências jurídicas
+- **Status**: Instalado e configurado (funcionando)
+- **Funcionalidades**: Verificação de precedentes jurídicos, acesso a bibliografia jurídica, consulta a documentos acadêmicos
 

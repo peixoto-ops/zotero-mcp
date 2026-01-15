@@ -24,8 +24,10 @@ O projeto zotero-mcp implementa um sistema completo de orquestração jurídica 
 - **Regras**: Diretrizes gerais de comportamento do sistema cognitivo
 
 ### 3. Integração com MCPs
-- **Zotero MCP**: Conexão com biblioteca Zotero
+- **Zotero MCP**: Conexão com biblioteca Zotero (instalado e funcionando)
 - **Obsidian MCP**: Conexão com vault do Obsidian
+  - `obsidian-vault`: Acesso ao vault com informações dos processos e pesquisas
+  - `obsidian-costum-patterns`: Acesso ao diretório de patterns do Fabric para análise jurídica
 - **Outras ferramentas**: serper, tavily-search, brave-search
 
 ### 4. Orquestração com Subagentes
@@ -85,6 +87,27 @@ Configuração em `~/.qwen/settings.json`:
 7. **Sincronização com Zotero/Obsidian**: Armazenamento e organização
 8. **Geração Final**: Produção da petição com rastreabilidade
 
+## Servidores MCP Disponíveis
+
+### obsidian-vault
+- **Propósito**: Acesso ao vault do Obsidian com informações dos processos e pesquisas jurídicas
+- **Localização**: `/media/peixoto/Portable/inv_sa_02`
+- **Recursos**: Leitura/escrita de notas Markdown, listagem de diretórios, busca de conteúdo
+- **Uso típico**: Armazenamento de informações dos processos, persistência de TOCs, salvamento de peças
+
+### obsidian-costum-patterns
+- **Propósito**: Acesso ao diretório de patterns do Fabric para análise jurídica
+- **Localização**: `/home/peixoto/.config/fabric/patterns`
+- **Recursos**: Centenas de patterns jurídicos e de análise legal
+- **Uso típico**: Análise de documentos jurídicos, aplicação de padrões FIRAC+, extração de informações
+
+### zotero-mcp
+- **Propósito**: Integração com biblioteca Zotero para gerenciamento de referências jurídicas
+- **Status**: Instalado e configurado (funcionando)
+- **Recursos disponíveis**: Busca em biblioteca Zotero, obtenção de metadados, recuperação de texto completo
+- **Uso atual**: Verificação de precedentes, acesso a bibliografia jurídica, consulta a documentos
+- **Configuração**: API local do Zotero habilitada, banco de dados indexado com 440 itens
+
 ## Comandos Úteis
 
 ### Fabric
@@ -92,9 +115,13 @@ Configuração em `~/.qwen/settings.json`:
 - Executar pattern: `echo "texto" | fabric -p nome_do_pattern`
 - Atualizar patterns: `fabric --update`
 
-### Zotero-MCP
+### Zotero-MCP (após instalação)
 - Executar servidor: `uv run zotero-mcp`
 - Testar conexão: Verificar logs do Qwen Code
+
+### Obsidian-MCP
+- Testar conexão: Verificar se os servidores obsidian-vault e obsidian-costum-patterns estão acessíveis
+- Comandos disponíveis: list_directory, read_note, write_note, search_notes, etc.
 
 ### Git
 - Verificar status: `git status`
