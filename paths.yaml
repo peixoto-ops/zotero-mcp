@@ -1,89 +1,16 @@
----
-# Configuração de Caminhos - Projeto zotero-mcp
+# Configuração do servidor Lex-OS
+# Este arquivo define os caminhos e configurações do sistema
 
-# Caminhos principais do projeto
-project:
-  root: "/media/peixoto/Portable/zotero-mcp"
-  ai_specs: "/media/peixoto/Portable/zotero-mcp/.ai"
-  github_config: "/media/peixoto/Portable/zotero-mcp/.github"
+obsidian_vault_path: "/home/peixoto/ObsidianVault"  # Caminho para o vault do Obsidian
+zotero_library_id: ""  # ID da biblioteca Zotero (deixe vazio se usando modo local)
+zotero_api_key: ""  # Chave da API Zotero (deixe vazio se usando modo local)
+zotero_local: true  # Usa a API local do Zotero (recomendado para uso local)
+custom_patterns_path: "/home/peixoto/peixoto-ops/costum_patterns"  # Caminho para patterns customizados
 
-# Configurações do Fabric
-fabric:
-  installed_patterns: "/home/peixoto/.config/fabric"
-  custom_patterns: "/media/peixoto/Portable/custom_patterns"
-  system_patterns: "/home/peixoto/.config/fabric/patterns"
+# Configurações do servidor
+server_host: "localhost"
+server_port: 8000
 
-# Configurações do Obsidian
-obsidian:
-  vault_path: "/media/peixoto/Portable/inv_sa_02"
-  local_rest_api_enabled: true
-  mcp_server_config:
-    command: "npx"
-    args: ["-y", "obsidian-mcp", "/media/peixoto/Portable/inv_sa_02"]
-  mcp_servers:
-    # obsidian-vault: Acesso ao vault com informações dos processos e pesquisas
-    vault:
-      command: "npx"
-      args: ["-y", "obsidian-mcp", "/media/peixoto/Portable/inv_sa_02"]
-      description: "Acesso ao vault do Obsidian com informações dos processos e pesquisas jurídicas"
-    # obsidian-costum-patterns: Acesso ao diretório de patterns do Fabric
-    custom_patterns:
-      command: "npx"
-      args: ["-y", "obsidian-mcp", "/home/peixoto/.config/fabric/patterns"]
-      description: "Acesso ao diretório de patterns do Fabric para análise jurídica"
-
-# Configurações do Zotero
-zotero:
-  mcp_server:
-    command: "uv"
-    args: ["run", "zotero-mcp"]
-  api:
-    local_enabled: true
-    web_api_key: ""
-    library_id: ""
-    library_type: "user"
-  # Configuração do servidor zotero-mcp (instalado)
-  mcp_server:
-    command: "/home/peixoto/.mcp/zotero/venv/bin/zotero-mcp"
-    args: []
-    description: "Servidor MCP para integração com biblioteca Zotero (INSTALADO E FUNCIONANDO)"
-
-# Configurações do Qwen Code
-qwen:
-  settings_path: "~/.qwen/settings.json"
-  mcp_servers:
-    # Servidor Zotero (instalado e funcionando)
-    zotero:
-      command: "/home/peixoto/.mcp/zotero/venv/bin/zotero-mcp"
-      args: []
-      env:
-        ZOTERO_LOCAL: "true"
-        ZOTERO_API_KEY: ""
-        ZOTERO_LIBRARY_ID: ""
-      description: "Servidor MCP para integração com biblioteca Zotero (INSTALADO E FUNCIONANDO)"
-    # Servidor Obsidian Vault
-    obsidian-vault:
-      command: "npx"
-      args: ["-y", "obsidian-mcp", "/media/peixoto/Portable/inv_sa_02"]
-      description: "Acesso ao vault do Obsidian com informações dos processos e pesquisas"
-    # Servidor Obsidian Costum Patterns
-    obsidian-costum-patterns:
-      command: "npx"
-      args: ["-y", "obsidian-mcp", "/home/peixoto/.config/fabric/patterns"]
-      description: "Acesso ao diretório de patterns do Fabric para análise jurídica"
-
-# Documentação
-documentation:
-  main: "/media/peixoto/Portable/zotero-mcp/QWEN.md"
-  readme: "/media/peixoto/Portable/zotero-mcp/README.md"
-  install_guide: "/media/peixoto/Portable/zotero-mcp/INSTALL.md"
-  context: "/media/peixoto/Portable/zotero-mcp/CONTEXT.md"
-  summary: "/media/peixoto/Portable/zotero-mcp/SUMMARY.md"
-  paths_config: "/media/peixoto/Portable/zotero-mcp/paths.yaml"
-
-# Outros caminhos relevantes
-paths:
-  git_repo: "git@github.com:peixoto-ops/zotero-mcp.git"
-  fabric_repo: "https://github.com/danielmiessler/Fabric"
-  zotero_mcp_repo: "https://github.com/kujenga/zotero-mcp"
-...
+# Configurações de processamento
+default_threshold: 0.6  # Limiar padrão para busca na memória local
+max_items_per_collection: 10  # Número máximo de itens a processar por coleção
